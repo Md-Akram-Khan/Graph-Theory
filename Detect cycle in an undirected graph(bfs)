@@ -1,0 +1,27 @@
+bool isCycle(int total_node, vector<int> adj[]) {
+    vector<int> vis(total_node, 0);
+    queue<pair<int, int>>q;
+    for(int i = 0; i < total_node; i++)
+    {
+        if(!vis[i])
+        {
+            q.push({i, -1});
+            vis[i] = 1;
+            while(!q.empty())
+            {
+                int node = q.front().first, parent = q.front().second;
+                q.pop();
+                for(auto i : adj[node])
+                {
+                    if(!vis[i])
+                    {
+                        vis[i] = 1;
+                        q.push({i, node});
+                    }
+                    else if(parent != i) return true;
+                }
+            }
+        }
+    }
+    return false;
+}
