@@ -2,7 +2,8 @@
 using namespace std;
 int main()
 {
-    int node=10;
+    int node;
+    cin>>node;
     vector<int>adjacency_list[node+1];
     int n; cin>>n;
     for(int i=0; i<n; i++)
@@ -25,6 +26,7 @@ int main()
 }
 /*
 Sample input:
+10
 26
 1 2
 1 3
