@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
-int node=4;
+int node;
+cin>>node;
 vector<vector<int>>matrix(node+1,vector<int>(node+1,0));
 vector<vector<int>>weight(node+1,vector<int>(node+1));
 int main()
@@ -33,6 +34,7 @@ int main()
 }
 /*
 input:
+4
 6
 1 2 3
 1 3 7
