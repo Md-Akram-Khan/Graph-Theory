@@ -1,0 +1,42 @@
+class Solution {
+    private:
+    void dfs(int rr, int cc, vector<vector<int>>grid, vector<vector<int>> &vis)
+    {
+        int r = grid.size(), c = grid[0].size();
+        vis[rr][cc] = 1;
+        int a[] = {0, 0, 1, -1};
+        int b[] = {1, -1, 0, 0};
+        for(int i = 0; i < 4; i++)
+        {
+            int nr = rr + a[i], nc = cc + b[i];
+            if(nr >= 0 and nr < r and nc >= 0 and nc < c and !vis[nr][nc] and grid[nr][nc] == 1)
+            {
+                dfs(nr, nc, grid, vis);
+            }
+        }
+    }
+public:
+    int numEnclaves(vector<vector<int>>& grid) {
+        int r = grid.size(), c = grid[0].size();
+        vector<vector<int>> vis(r, vector<int> (c, 0));
+        for(int i = 0; i < r; i++)
+        {
+            for(int j = 0; j < c; j++)
+            {
+                if(i == 0 or j == 0 or i == r - 1 or j == c - 1)
+                       {
+                           if(grid[i][j] == 1 and !vis[i][j]) dfs(i, j, grid, vis);
+                       }
+            }
+        }
+        int cnt = 0;
+        for(int i = 0; i < r; i++)
+        {
+            for(int j = 0; j < c; j++)
+            {
+                if(vis[i][j] == 0 and grid[i][j] == 1) cnt++;
+            }
+        }
+        return cnt;
+    }
+};
