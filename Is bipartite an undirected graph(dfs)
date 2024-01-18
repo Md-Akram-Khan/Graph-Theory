@@ -1,25 +1,25 @@
-bool check(int parent, int col, vector<int> &color, vector<vector<int>> adj)
+bool check(int parent, int col, vector<int> &color, vector<vector<int>> graph)
 {
     color[parent] = col;
-    for(auto child : adj[parent])
+    for(auto child : graph[parent])
     {
         if(color[child] == -1)
         {
-            if(!check(child, !col, color, adj)) return false;
+            if(!check(child, !col, color, graph)) return false;
         }
         else if(color[child] == col) return false;
     }
     return true;
 }
 
-bool isBipartite(vector<vector<int>>& adj) {
-    int n = adj.size();
+bool isBipartite(vector<vector<int>>& graph) {
+    int n = graph.size();
     vector<int> color(n, -1);
     for(int i = 0; i < n; i++)
     {
         if(color[i] == -1)
         {
-            if(!check(i, 0, color, adj)) return false;
+            if(!check(i, 0, color, graph)) return false;
         }
     }
     return true;
