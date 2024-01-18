@@ -1,0 +1,35 @@
+bool check(int start, int color[], vector<vector<int>> adj)
+{
+    queue<int> q;
+    q.push(start);
+    color[start] = 0;
+    while(!q.empty())
+    {
+        int parent = q.front();
+        q.pop();
+        for(auto child : adj[parent])
+        {
+            if(color[child] == -1)
+            {
+                q.push(child);
+                color[child] = !color[parent];
+            }
+            else if(color[child] == color[parent])
+                return false;
+        }
+    }
+    return true;
+}
+bool isBipartite(vector<vector<int>>& adj) {
+    int n = adj.size();
+    int color[n];
+    for(int i = 0; i < n; i++) color[i] = -1;
+    for(int i = 0; i < n; i++)
+    {
+        if(color[i] == -1)
+        {
+            if(check(i, color, adj) == false) return false;
+        }
+    }
+    return true;
+}
