@@ -24,3 +24,31 @@ bool isCyclic(int V, vector<int> adj[]) {
     }
     return false;
 }
+/* 
+//without using pathvis array//
+bool checkcycle(int node, int vis[], vector<int> adj[])
+{
+    vis[node] = 2;
+    for(auto it: adj[node])
+    {
+        if(!vis[it])
+        {
+            if(checkcycle(it, vis, adj)) return true;
+        }
+        else if(vis[it] == 2) return true;
+    }
+    vis[node]--;
+    return false;
+}
+bool isCyclic(int V, vector<int> adj[]) {
+    int vis[V] = {0};
+    for(int i = 0; i < V; i++)
+    {
+        if(!vis[i])
+        {
+            if(checkcycle(i, vis, adj)) return true;
+        }
+    }
+    return false;
+}
+*/
