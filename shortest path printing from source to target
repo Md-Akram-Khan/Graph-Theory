@@ -21,15 +21,15 @@ vector<int> shortestpath(vector<int> adj[],int n, int s, int d) //here n = total
                 pq.push(dis[child], child);
             }
         }
-        if(dis[d] == 1e9) return {-1};
-        vector<int> path;
-        int node = d;
-        while(parent[node] != node)
-        {
-            path.push_back(node);
-            node = parent[node];
-        }
-        path.push_back(s);
-        return path;
     }
+    if(dis[d] == 1e9) return {-1};
+    vector<int> path;
+    int node = d;
+    while(parent[node] != node)
+    {
+       path.push_back(node);
+       node = parent[node];
+    }
+    path.push_back(s);
+    return path;
 }
