@@ -1,0 +1,25 @@
+//can work with negative weight
+vector<int> bellman_ford(int V, vector<vector<int>>& edges, int S) { // V = Total node, S = source
+        vector<int>dis(V, 1e8);
+        dis[S] = 0;
+        for(int i = 0; i < V - 1; i++)
+        {
+            for(auto i: edges)
+            {
+                int u = i[0], v = i[1], weight = i[2];
+                if(dis[u] != 1e8 && dis[u] + weight < dis[v])
+                {
+                    dis[v] = dis[u] + weight;
+                }
+            }
+        }
+        for(auto i: edges)
+            {
+                int u = i[0], v = i[1], weight = i[2];
+                if(dis[u] != 1e8 && dis[u] + weight < dis[v])
+                {
+                    return {-1};
+                }
+            }
+        return dis;    
+    }
