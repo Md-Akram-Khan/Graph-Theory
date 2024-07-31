@@ -8,9 +8,9 @@ for(int i = 0; i < V - 1; i++)
         {
                 int u = i[0], v = i[1], weight = i[2];
                 if(dis[u] != 1e8 && dis[u] + weight < dis[v])
-        {
-                dis[v] = dis[u] + weight;
-        }
+                {
+                        dis[v] = dis[u] + weight;
+                }
         }
  }
         // for checking negative cycle
