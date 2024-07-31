@@ -1,4 +1,5 @@
 //can work with negative weight
+//sortest cost from one source to other node
 vector<int> bellman_ford(int V, vector<vector<int>>& edges, int S) { // V = Total node, S = source
 vector<int>dis(V, 1e8);
 dis[S] = 0;
