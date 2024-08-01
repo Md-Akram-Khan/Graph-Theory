@@ -1,0 +1,24 @@
+//matrix[i][j] must be 0, if i == j
+//matrix[i][j] must be INT_MAX if i to j have no edge
+//multiple source to all node 
+//can detect negative cycle
+//can work with negative edge weight
+void shortest_distance(vector<vector<int>>&matrix){
+	    int n = matrix.size();
+	    for(int via = 0; via < n; via++)
+	    {
+	        for(int i = 0; i < n ; i++)
+	        {
+	            for(int j = 0; j < n; j++)
+	            {
+	                matrix[i][j] = min(matrix[i][j], matrix[i][via] + matrix[via][j]);
+	            }
+	        }
+	    }
+	    // for detecting negative cycle
+	    for(int i = 0; i < n; i++)
+	    {
+	        if(matrix[i][j] < 0)
+	            cout<<"YES Negative cycle";
+	    }
+}
