@@ -1,0 +1,25 @@
+int spanningTree(int V, vector<vector<int>> adj[]) //V = node
+{
+    vector<int> vis(V, 0);
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    pq.push({0, 0});
+    int sum = 0;
+    while(!pq.empty())
+    {
+        auto it = pq.top();
+        int weight = it.first, parent = it.second;
+        pq.pop();
+        if(vis[parent]) continue;
+        sum += weight;
+        vis[parent] = 1;
+        for(auto i: adj[parent])
+        {
+            int child = i[0], nweight = i[1];
+            if(!vis[child])
+            {
+                pq.push({nweight, child});
+            }
+        }
+    }
+    return sum;
+}
