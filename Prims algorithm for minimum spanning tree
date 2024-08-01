@@ -1,0 +1,32 @@
+void spanningTree(int V, vector<vector<int>> adj[]) // V = node
+{
+    vector<int> vis(V, 0);
+    priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> pq;
+    pq.push({0, {0, -1}});
+    //int sum = 0;
+    vector<pair<pair<int, int>, int>> v;
+    while(!pq.empty())
+    {
+        auto it = pq.top();
+        int weight = it.first, child = it.second.first, parent = it.second.second;
+        pq.pop();
+        if(vis[child]) continue;
+        //sum += weight;
+        vis[child] = 1;
+        if(parent != -1)
+            v.push_back({{child, parent}, weight});
+        for(auto i: adj[child])
+        {
+            int grandchild = i[0], nweight = i[1];
+            if(!vis[grandchild])
+            {
+                pq.push({nweight, {grandchild, child}});
+            }
+        }
+    }
+    for(int i = 0; i < V - 1; i++)
+    {
+        cout<<v[i].first.first<<' '<<v[i].first.second<<' '<<v[i].second<<endl;
+    }
+    //return sum;
+}
