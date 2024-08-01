@@ -1,0 +1,64 @@
+struct dsu
+{
+    vector<int>sz, parent;
+    //vector<int>rank;
+    dsu(int n)
+    {
+        //rank.resize(n + 1, 0);
+        sz.resize(n + 1, 1);
+        parent.resize(n + 1);
+        for(int i = 0; i <= n; i++) parent[i] = i;
+    }
+    int findparent(int child)
+    {
+        if(child != parent[child]) parent[child] = findparent(parent[child]);
+        return parent[child];
+    }
+    bool same_parent(int u, int v)
+    {
+        int parent_u = findparent(u), parent_v = findparent(v);
+        return parent_u == parent_v;
+    }
+    void unionbysize(int u, int v)
+    {
+        int parent_u = findparent(u), parent_v = findparent(v);
+        if(parent_u == parent_v) return;
+        if(sz[parent_u] < sz[parent_v]) swap(sz[parent_u], sz[parent_v]);
+        parent[parent_v] = parent_u;
+        sz[parent_u] += sz[parent_v];
+    }
+    // void unionbyrank(int u, int v)
+    // {
+    //     int parent_u = findparent(u), parent_v = findparent(v);
+    //     if(parent_u == parent_v) return;
+    //     if(rank[parent_u] == rank[parent_v]) rank[parent_u]++;
+    //     if(rank[parent_u] < rank[parent_v]) swap(rank[parent_u], rank[parent_v]); 
+    //     parent[parent_v] = parent_u;
+    // }
+    int ssize(int u)
+    {
+        return sz[findparent(u)];
+    }
+    
+};
+int spanningTree(int V, vector<vector<int>> adj[]) // V = node;
+{
+    vector<pair<int, pair<int, int>>> edge;
+    for(int i = 0; i < V; i++)
+    {
+        for(auto j: adj[i])
+        {
+            edge.push_back({j[1], {i, j[0]}});
+        }
+    }
+    sort(edge.begin(), edge.end());
+    dsu graph(V);
+    int sum = 0;
+    for(int i = 0; i < edge.size(); i++)
+    {
+        if(graph.same_parent(edge[i].second.first, edge[i].second.second)) continue;
+        sum += edge[i].first;
+        graph.unionbysize(edge[i].second.first, edge[i].second.second);
+    }
+    return sum;
+}
