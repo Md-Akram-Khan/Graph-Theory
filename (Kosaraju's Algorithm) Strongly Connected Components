@@ -1,3 +1,5 @@
+// must be directed graph
+// node A -> node B then node B -> node A 
 void dfs(int node, vector<int> &vis, vector<int> adj[], stack<int> &st)
 {
     vis[node] = 1;
