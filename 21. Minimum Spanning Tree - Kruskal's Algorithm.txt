@@ -1,0 +1,109 @@
+//{ Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+
+struct dsu
+{
+    vector<int>sz, parent;
+    //vector<int>rank;
+    dsu(int n)
+    {
+        //rank.resize(n + 1, 0);
+        sz.resize(n + 1, 1);
+        parent.resize(n + 1);
+        for(int i = 0; i <= n; i++) parent[i] = i;
+    }
+    int findparent(int child)
+    {
+        if(child != parent[child]) parent[child] = findparent(parent[child]);
+        return parent[child];
+    }
+    bool same_parent(int u, int v)
+    {
+        int parent_u = findparent(u), parent_v = findparent(v);
+        return parent_u == parent_v;
+    }
+    void unionbysize(int u, int v)
+    {
+        int parent_u = findparent(u), parent_v = findparent(v);
+        if(parent_u == parent_v) return;
+        if(sz[parent_u] < sz[parent_v]) swap(sz[parent_u], sz[parent_v]);
+        parent[parent_v] = parent_u;
+        sz[parent_u] += sz[parent_v];
+    }
+    // void unionbyrank(int u, int v)
+    // {
+    //     int parent_u = findparent(u), parent_v = findparent(v);
+    //     if(parent_u == parent_v) return;
+    //     if(rank[parent_u] == rank[parent_v]) rank[parent_u]++;
+    //     if(rank[parent_u] < rank[parent_v]) swap(rank[parent_u], rank[parent_v]); 
+    //     parent[parent_v] = parent_u;
+    // }
+    int ssize(int u)
+       {
+           return sz[findparent(u)];
+       }
+    
+};
+class Solution
+{
+	public:
+	//Function to find sum of weights of edges of the Minimum Spanning Tree.
+    int spanningTree(int V, vector<vector<int>> adj[])
+    {
+        vector<pair<int, pair<int, int>>> edge;
+        for(int i = 0; i < V; i++)
+        {
+            for(auto j: adj[i])
+            {
+                edge.push_back({j[1], {i, j[0]}});
+            }
+        }
+        sort(edge.begin(), edge.end());
+        dsu graph(V);
+        int sum = 0;
+        for(int i = 0; i < edge.size(); i++)
+        {
+            if(graph.same_parent(edge[i].second.first, edge[i].second.second)) continue;
+            sum += edge[i].first;
+            graph.unionbysize(edge[i].second.first, edge[i].second.second);
+        }
+        return sum;
+    }
+};
+
+//{ Driver Code Starts.
+
+
+int main()
+{
+    int t;
+    cin >> t;
+    while (t--) {
+        int V, E;
+        cin >> V >> E;
+        vector<vector<int>> adj[V];
+        int i=0;
+        while (i++<E) {
+            int u, v, w;
+            cin >> u >> v >> w;
+            vector<int> t1,t2;
+            t1.push_back(v);
+            t1.push_back(w);
+            adj[u].push_back(t1);
+            t2.push_back(u);
+            t2.push_back(w);
+            adj[v].push_back(t2);
+        }
+        
+        Solution obj;
+    	cout << obj.spanningTree(V, adj) << "\n";
+    }
+
+    return 0;
+}
+
+
+// } Driver Code Ends

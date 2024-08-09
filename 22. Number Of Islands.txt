@@ -1,0 +1,107 @@
+//{ Driver Code Starts
+// Initial Template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+// User function Template for C++
+struct dsu
+{
+    vector<int>sz, parent;
+    dsu(int n)
+    {
+        sz.resize(n + 1, 1);
+        parent.resize(n + 1);
+        for(int i = 0; i <= n; i++) parent[i] = i;
+    }
+    int findparent(int child)
+    {
+        if(child != parent[child]) parent[child] = findparent(parent[child]);
+        return parent[child];
+    }
+    bool same_parent(int u, int v)
+    {
+        int parent_u = findparent(u), parent_v = findparent(v);
+        return parent_u == parent_v;
+    }
+    void unionbysize(int u, int v)
+    {
+        int parent_u = findparent(u), parent_v = findparent(v);
+        if(parent_u == parent_v) return;
+        if(sz[parent_u] < sz[parent_v]) swap(sz[parent_u], sz[parent_v]);
+        parent[parent_v] = parent_u;
+        sz[parent_u] += sz[parent_v];
+    }
+    int ssize(int u)
+    {
+        return sz[findparent(u)];
+    }
+};
+class Solution {
+  public:
+    vector<int> numOfIslands(int n, int m, vector<vector<int>> &operators) {
+        vector<int> vis(n * m, 0), ans;
+        dsu graph(n * m);
+        int cnt = 0;
+        for(auto j: operators)
+        {
+            int row = j[0], col = j[1];
+            int cellno = row * m + col; 
+            if(vis[cellno])
+            {
+                ans.push_back(cnt);
+                continue;
+            }
+            vis[cellno] = 1;
+            cnt++;
+            int dx[] = {0, 0, +1, -1}, dy[] = {+1, -1, 0, 0};
+            for(int i = 0; i < 4; i++)
+            {
+                int nr = row + dx[i], nc = col + dy[i];
+                int adjcellno = nr * m + nc;
+                if(nr >= 0 and nr < n and nc >= 0 and nc < m)
+                {
+                    if(vis[adjcellno])
+                    {
+                        if(!graph.same_parent(adjcellno, cellno))
+                        {
+                            cnt--;
+                            graph.unionbysize(adjcellno, cellno);
+                        }
+                    }
+                }
+            }
+            ans.push_back(cnt);
+        }
+        return ans;
+    }
+};
+
+
+//{ Driver Code Starts.
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n,m,k; cin>>n>>m>>k;
+        vector<vector<int>> a;
+        
+        for(int i=0; i<k; i++){
+            vector<int> temp;
+            for(int j=0; j<2; j++){
+                int x; cin>>x;
+                temp.push_back(x);
+            }
+            a.push_back(temp);
+        }
+    
+        Solution obj;
+        vector<int> res = obj.numOfIslands(n,m,a);
+        
+        for(auto x : res)cout<<x<<" ";
+        cout<<"\n";
+    }
+}
+
+// } Driver Code Ends
