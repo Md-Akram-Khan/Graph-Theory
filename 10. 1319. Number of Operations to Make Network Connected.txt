@@ -1,0 +1,57 @@
+struct dsu
+{
+    vector<int>sz, parent;
+    dsu(int n)
+    {
+        sz.resize(n + 1, 1);
+        parent.resize(n + 1);
+        for(int i = 0; i <= n; i++) parent[i] = i;
+    }
+    int findparent(int child)
+    {
+        if(child != parent[child]) parent[child] = findparent(parent[child]);
+        return parent[child];
+    }
+    bool same_parent(int u, int v)
+    {
+        int parent_u = findparent(u), parent_v = findparent(v);
+        return parent_u == parent_v;
+    }
+    void unionbysize(int u, int v)
+    {
+        int parent_u = findparent(u), parent_v = findparent(v);
+        if(parent_u == parent_v) return;
+        if(sz[parent_u] < sz[parent_v]) swap(sz[parent_u], sz[parent_v]);
+        parent[parent_v] = parent_u;
+        sz[parent_u] += sz[parent_v];
+        sz[parent_v] = 0;
+    }
+    int ssize(int u)
+    {
+        return sz[u];
+    }
+};
+class Solution {
+public:
+    int makeConnected(int n, vector<vector<int>>& connections) {
+        dsu graph(n);
+        int c = 0;
+        int m = connections.size();
+        for(int i = 0; i < m; i++)
+        {
+            if(graph.same_parent(connections[i][0], connections[i][1]))
+                c++;
+            else
+                graph.unionbysize(connections[i][0], connections[i][1]);
+        }
+        int cnt = 0;
+        for(int i = 0; i < n; i++)
+        {
+            if(graph.ssize(i) >= 1)
+                cnt++;
+        }
+        if(cnt - 1 > c)
+            return -1;
+        return cnt - 1;
+    }
+};

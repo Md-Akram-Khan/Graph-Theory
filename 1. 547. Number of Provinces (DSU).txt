@@ -1,0 +1,55 @@
+struct dsu
+{
+    vector<int>sz, parent;
+    dsu(int n)
+    {
+        sz.resize(n + 1, 1);
+        parent.resize(n + 1);
+        for(int i = 0; i <= n; i++) parent[i] = i;
+    }
+    int findparent(int child)
+    {
+        if(child != parent[child]) parent[child] = findparent(parent[child]);
+        return parent[child];
+    }
+    bool same_parent(int u, int v)
+    {
+        int parent_u = findparent(u), parent_v = findparent(v);
+        return parent_u == parent_v;
+    }
+    void unionbysize(int u, int v)
+    {
+        int parent_u = findparent(u), parent_v = findparent(v);
+        if(parent_u == parent_v) return;
+        if(sz[parent_u] < sz[parent_v]) swap(sz[parent_u], sz[parent_v]);
+        parent[parent_v] = parent_u;
+        sz[parent_u] += sz[parent_v];
+        sz[parent_v] = 0;
+    }
+    int ssize(int u)
+    {
+        return sz[u];
+    }
+};
+class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n = isConnected.size();
+        dsu graph(n);
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < n; j++)
+            {
+                if(isConnected[i][j])
+                    graph.unionbysize(i, j);
+            }
+        }
+        int cnt = 0;
+        for(int i = 0; i < n; i++)
+        {
+            if(graph.ssize(i) >= 1)
+                cnt++;
+        }
+        return cnt;
+    }
+};

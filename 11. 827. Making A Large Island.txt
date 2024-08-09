@@ -1,0 +1,92 @@
+struct dsu
+{
+    vector<int>sz, parent;
+    dsu(int n)
+    {
+        sz.resize(n + 1, 1);
+        parent.resize(n + 1);
+        for(int i = 0; i <= n; i++) parent[i] = i;
+    }
+    int findparent(int child)
+    {
+        if(child != parent[child]) parent[child] = findparent(parent[child]);
+        return parent[child];
+    }
+    bool same_parent(int u, int v)
+    {
+        int parent_u = findparent(u), parent_v = findparent(v);
+        return parent_u == parent_v;
+    }
+    void unionbysize(int u, int v)
+    {
+        int parent_u = findparent(u), parent_v = findparent(v);
+        if(parent_u == parent_v) return;
+        if(sz[parent_u] < sz[parent_v]) swap(sz[parent_u], sz[parent_v]);
+        parent[parent_v] = parent_u;
+        sz[parent_u] += sz[parent_v];
+    }
+    int ssize(int u)
+    {
+        return sz[findparent(u)];
+    }
+};
+class Solution {
+public:
+    int largestIsland(vector<vector<int>>& grid) {
+        int n = grid.size();
+        dsu graph(n * n);
+        int dx[] = {0, 0, 1, -1}, dy[] = {1, -1, 0, 0};
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < n; j++)
+            {
+                if(grid[i][j])
+                {
+                    int cellno = i * n + j;
+                    for(int k = 0; k < 4; k++)
+                    {
+                        int nr = i + dx[k], nc = j + dy[k];
+                        int adjcellno = nr * n + nc;
+                        if(nr >= 0 and nc >= 0 and nr < n and nc < n)
+                        {
+                            if(grid[nr][nc])
+                            {
+                                graph.unionbysize(adjcellno, cellno);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        int ans = 0;
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < n; j++)
+            {
+                if(!grid[i][j])
+                {
+                    int cnt = 0;
+                    int cellno = i * n + j;
+                    set<int>s;
+                    for(int k = 0; k < 4; k++)
+                    {
+                        int nr = i + dx[k], nc = j + dy[k];
+                        int adjcellno = nr * n + nc;
+                        if(nr >= 0 and nc >= 0 and nr < n and nc < n)
+                        {
+                            if(grid[nr][nc])
+                            {
+                                s.insert(graph.findparent(adjcellno));
+                            }
+                        }
+                    }
+                    for(auto i: s)
+                        cnt+= graph.ssize(i);
+                    ans = max(ans, cnt);
+                }
+            }
+        }
+        return max(ans + 1, graph.ssize(0));
+    }
+
+};

@@ -1,0 +1,72 @@
+struct dsu
+{
+    vector<int>sz, parent;
+    dsu(int n)
+    {
+        sz.resize(n + 1, 1);
+        parent.resize(n + 1);
+        for(int i = 0; i <= n; i++) parent[i] = i;
+    }
+    int findparent(int child)
+    {
+        if(child != parent[child]) parent[child] = findparent(parent[child]);
+        return parent[child];
+    }
+    bool same_parent(int u, int v)
+    {
+        int parent_u = findparent(u), parent_v = findparent(v);
+        return parent_u == parent_v;
+    }
+    void unionbysize(int u, int v)
+    {
+        int parent_u = findparent(u), parent_v = findparent(v);
+        if(parent_u == parent_v) return;
+        if(sz[parent_u] < sz[parent_v]) swap(sz[parent_u], sz[parent_v]);
+        parent[parent_v] = parent_u;
+        sz[parent_u] += sz[parent_v];
+    }
+    int ssize(int u)
+    {
+        return sz[findparent(u)];
+    }
+};
+class Solution {
+public:
+    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        int n = accounts.size();
+        dsu graph(n);
+        map<string, int> mailcheck;
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 1; j < accounts[i].size(); j++)
+            {
+                string mail = accounts[i][j];
+                if(mailcheck.find(mail) == mailcheck.end())
+                    mailcheck[mail] = i;
+                else
+                    graph.unionbysize(i, mailcheck[mail]);
+            }
+        }
+        vector<string> mailsort[n];
+        for(auto i: mailcheck)
+        {
+            string mail = i.first;
+            int mailno = graph.findparent(i.second);
+            mailsort[mailno].push_back(mail);
+        }
+        vector<vector<string>> ans;
+        for(int i = 0; i < n; i++)
+        {
+            if(mailsort[i].size() == 0) continue;
+            vector<string>temp;
+            temp.push_back(accounts[i][0]);
+            sort(mailsort[i].begin(), mailsort[i].end());
+            for(auto i: mailsort[i])
+            {
+                temp.push_back(i);
+            }
+            ans.push_back(temp);
+        }
+        return ans;
+    }
+};
