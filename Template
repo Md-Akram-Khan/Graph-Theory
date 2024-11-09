@@ -1,0 +1,105 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define nl                      "\n"
+#define ff                      first
+#define ss                      second
+#define ll                      long long int
+#define pb                      push_back
+#define cceil(a, b)             (((a) + (b) - 1) / (b))
+#define sqr(x)                  ((x)*(x))
+#define pi                      acos(-1)
+#define lsb                     sizeof(n) * CHAR_BIT - __builtin_clz(n);
+#define gcd(x,y)                __gcd(x,y)
+#define lcm(x,y)                ((x * y) / gcd(x,y))
+#define all(x)                  (x).begin(), (x).end()
+#define sorta(x)                sort(all(x))
+#define sortd(x)                sort(all(x), greater<int>())
+#define maxall(x)                *max_element(all(x))
+#define minall(x)                *min_element(all(x))
+#define valid(nx,ny,row,col)    (nx >= 1 && nx <= row && ny >= 1 && ny <= col)
+#define inset(a, b, c)          set_intersection(a.begin(), a.end(), b.begin(), b.end(), inserter(c, c.begin()));
+#define yes                     cout << "Yes" << nl
+#define yess                    cout << "YES" << nl
+#define no                      cout << "No" << nl
+#define noo                     cout << "NO" << nl
+#define mone                    cout << -1 << nl
+#define alice                   cout << "Alice" << nl
+#define bob                     cout << "Bob" << nl
+#define space                   << ' ' <<
+#define bericade                cout<<"-----------------------"<<nl
+#define debug(x)                cerr << #x << " = " << x << endl;
+
+const int mod = 1e9 + 7;
+
+using pii       = pair<int, int>;
+using pll       = pair<ll, ll>;
+using mii       = map<int, int>;
+using mll       = map<ll, ll>;
+using msti      = map<string, int>;
+using mpiii     = map<pair<int, int>, int>;
+using vi        = vector<int>;
+using vl        = vector<ll>;
+using vvi       = vector<vi>;
+using vvl       = vector<vl>;
+using vpii      = vector<pii>;
+using vpll      = vector<pll>;
+using si        = set<int>;
+using msi       = multiset<int>;
+using qi        = queue<int>;
+using pqid      = priority_queue<int>;
+using pqia      = priority_queue<int, vector<int>, greater<int>>;
+
+/*------------------------------Graph Moves----------------------------*/
+// const int fx[]={+1,-1,+0,+0};             // 4 directions
+// const int fy[]={+0,+0,+1,-1};             // 4 directions
+// const int fx[]={+0,+0,+1,-1,-1,+1,-1,+1}; // Kings Move
+// const int fy[]={-1,+1,+0,+0,+1,+1,-1,-1}; // Kings Move
+// const int fx[]={-2, -2, -1, -1,  1,  1,  2,  2};  // Knights Move
+// const int fy[]={-1,  1, -2,  2, -2,  2, -1,  1}; // Knights Move
+/*---------------------------------------------------------------------*/
+
+void solve()
+{
+    int n;
+    cin>>n;
+    vector<ll> a(n + 1), pregcd(n + 1), suffgcd(n + 1);
+    for(int i = 1; i <= n; i++)
+        cin>>a[i];
+    pregcd[1] = a[1];
+    for(int i = 2; i <= n; i++)
+    {
+        pregcd[i] = gcd(pregcd[i - 1], a[i]);
+    }
+    suffgcd[n] = a[n];
+    for(int i = n - 1; i >= 1; i--)
+    {
+        suffgcd[i] = gcd(suffgcd[i + 1], a[i]);
+    }
+    ll llcm = 1;
+    for(int i = 1; i <= n; i++)
+    {
+        if(i == 1)
+            llcm = lcm(llcm, suffgcd[i + 1]);
+        else if(i == n)
+            llcm = lcm(llcm, pregcd[i - 1]);
+        else
+        {
+            llcm = lcm(llcm, gcd(pregcd[i - 1], suffgcd[i + 1]));
+        }
+    }
+    cout<<llcm<<nl;
+
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+    int t = 1;
+    //cin>>t;
+    for(int i = 1; i <= t; i++)
+    {
+        //cout<<"Case "<<i<<": ";
+        solve();
+    }
+    return 0;
+}
