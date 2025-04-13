@@ -77,10 +77,8 @@ public class Graph {
         int node = sc.nextInt();
         int edge = sc.nextInt();
         ArrayList<Integer>[] adj = new ArrayList[node];
-        // int[] adj = new int[10];
         for (int i = 0; i < node; i++)
             adj[i] = new ArrayList<>();
-
         for (int i = 0; i < edge; i++) {
             int u = sc.nextInt();
             int v = sc.nextInt();
