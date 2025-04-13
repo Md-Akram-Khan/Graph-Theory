@@ -93,3 +93,28 @@ public class Graph {
         }
     }
 }
+************************************************************
+import java.util.*;
+
+public class Graph {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int node = sc.nextInt();
+        int edge = sc.nextInt();
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < node; i++)
+            adj.add(new ArrayList<>());
+        for (int i = 0; i < edge; i++) {
+            int u = sc.nextInt();
+            int v = sc.nextInt();
+            adj.get(u).add(v);
+            adj.get(v).add(u);
+        }
+        for (int i = 0; i < node; i++) {
+            System.out.print(i + ":");
+            for (int j : adj.get(i))
+                System.out.print(j + " ");
+            System.out.println();
+        }
+    }
+}
