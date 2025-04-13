@@ -67,3 +67,31 @@ Adjacent node of 8     : 3 5 7
 Adjacent node of 9     : 7 10
 Adjacent node of 10    : 5 6 9
 */
+/*
+//java code//
+import java.util.*;
+
+public class Graph {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int node = sc.nextInt();
+        int edge = sc.nextInt();
+        ArrayList<Integer>[] adj = new ArrayList[node];
+        // int[] adj = new int[10];
+        for (int i = 0; i < node; i++)
+            adj[i] = new ArrayList<>();
+
+        for (int i = 0; i < edge; i++) {
+            int u = sc.nextInt();
+            int v = sc.nextInt();
+            adj[u].add(v);
+            adj[v].add(u);
+        }
+        for (int i = 0; i < node; i++) {
+            System.out.print(i + ":");
+            for (int j : adj[i])
+                System.out.print(j + " ");
+            System.out.println();
+        }
+    }
+}
