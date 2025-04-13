@@ -121,3 +121,33 @@ Distence from 7 to 8 : 1
 Distence from 7 to 9 : 1
 Distence from 7 to 10 : 2
 */
+/*
+import java.util.*;
+public class Graph{
+    public static void main(String[] args) {
+        int node = 10;
+        //ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        ArrayList<Integer> bfs = new ArrayList<>();
+        boolean vis[] = new boolean[node];
+        vis[0] = 1;
+        Queue<Integer> q = new LinkedList<>();
+        q.add(0);
+        while(!q.isEmpty())
+        {
+            int parent = q.poll();
+            bfs.add(parent);
+            for(int child: adj.get(parent))
+            {
+                if(!vis[child])
+                {
+                    vis[child] = 1;
+                    q.add(add);
+                }
+            }
+        }
+        for(int i = 0; i < bfs.size(); i++)
+            System.out.print(bfs[i] + " ");
+        System.out.println();
+    }
+}
+*/
