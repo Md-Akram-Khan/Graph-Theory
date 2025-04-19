@@ -94,49 +94,55 @@ DFS traversal: 7 3 1 2 6 10 5 8 9 4
 import java.util.*;
 
 public class Graph {
-    public static void dfs(int parent, boolean[] vis,
-                           ArrayList<ArrayList<Integer>> adj, ArrayList<Integer> ls) {
-        vis[parent] = true;       // Mark as visited
-        ls.add(parent);           // Add to result list
-
-        for (int child : adj.get(parent)) {
-            if (!vis[child]) {
-                dfs(child, vis, adj, ls);
+    public static void dfs(int node, ArrayList<Integer>[] adj, ArrayList<Integer> list, boolean[] vis) {
+        list.add(node);
+        for (int j : adj[node]) {
+            if (!vis[j]) {
+                vis[j] = true;
+                dfs(j, adj, list, vis);
             }
         }
     }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-
         int node = sc.nextInt();
         int edge = sc.nextInt();
-
-        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        ArrayList<Integer>[] adj = new ArrayList[node];
         for (int i = 0; i < node; i++) {
-            adj.add(new ArrayList<>());
+            adj[i] = new ArrayList<>();
         }
-
         for (int i = 0; i < edge; i++) {
-            int u = sc.nextInt();
-            int v = sc.nextInt();
-            adj.get(u).add(v);
-            adj.get(v).add(u); // for undirected graph
+            int u, v;
+            u = sc.nextInt();
+            v = sc.nextInt();
+            adj[u].add(v);
+            adj[v].add(u);
         }
-
         boolean[] vis = new boolean[node];
-        ArrayList<Integer> ls = new ArrayList<>();
-
-        dfs(0, vis, adj, ls); // Start DFS from node 0
-
-        // Print the result
-        System.out.println("DFS Traversal:");
-        for (int val : ls) {
-            System.out.print(val + " ");
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = 0; i < node; i++) {
+            if (!vis[i]) {
+                vis[i] = true;
+                dfs(i, adj, list, vis);
+            }
         }
-
-        sc.close();
+        for (int i = 0; i < list.size(); i++) {
+            System.out.print(list.get(i) + " ");
+        }
     }
 }
 
+/////////////////////////////////////////////////////////
+input:
+6 7
+0 1
+0 2
+1 3
+2 3
+2 4
+3 5
+4 5
+output:
+0 1 3 2 4 5 
 */
