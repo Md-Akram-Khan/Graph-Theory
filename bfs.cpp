@@ -123,31 +123,52 @@ Distence from 7 to 10 : 2
 */
 /*
 import java.util.*;
-public class Graph{
+
+public class Graph {
     public static void main(String[] args) {
-        int node = 10;
-        //ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
-        ArrayList<Integer> bfs = new ArrayList<>();
-        boolean vis[] = new boolean[node];
-        vis[0] = 1;
+        Scanner sc = new Scanner(System.in);
+        int node = sc.nextInt();
+        int edge = sc.nextInt();
+        ArrayList<Integer>[] adj = new ArrayList[node];
+        for (int i = 0; i < node; i++)
+            adj[i] = new ArrayList<>();
+        for (int i = 0; i < edge; i++) {
+            int u, v;
+            u = sc.nextInt();
+            v = sc.nextInt();
+            adj[u].add(v);
+            adj[v].add(u);
+        }
         Queue<Integer> q = new LinkedList<>();
+        boolean[] vis = new boolean[node];
+        vis[0] = true;
         q.add(0);
-        while(!q.isEmpty())
-        {
+        ArrayList<Integer> list = new ArrayList<>();
+        while (!q.isEmpty()) {
             int parent = q.poll();
-            bfs.add(parent);
-            for(int child: adj.get(parent))
-            {
-                if(!vis[child])
-                {
-                    vis[child] = 1;
-                    q.add(add);
+            list.add(parent);
+            for (int j : adj[parent]) {
+                if (!vis[j]) {
+                    vis[j] = true;
+                    q.add(j);
                 }
             }
         }
-        for(int i = 0; i < bfs.size(); i++)
-            System.out.print(bfs[i] + " ");
-        System.out.println();
+        for (int i = 0; i < list.size(); i++)
+            System.out.print(list.get(i) + " ");
+        sc.close();
     }
 }
+//////////////////////////////////////////////////////////////////////
+input:
+6 7
+0 1
+0 2
+1 3
+2 3
+2 4
+3 5
+4 5
+output
+0 1 2 3 4 5 
 */
