@@ -34,3 +34,90 @@ vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections)
         dfs(0, -1, vis, adj, tin, low, bridges);
         return bridges;
     }
+/*
+import java.util.*;
+
+public class Graph {
+    public static class pair {
+        int x, y;
+
+        pair(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    public static int timer = 1;
+
+    public static void dfs(int child, int parent, ArrayList<Integer>[] adj,
+            boolean vis[], int inT[], int low[], ArrayList<pair> list) {
+        vis[child] = true;
+        inT[child] = low[child] = timer;
+        timer++;
+        for (int grandchild : adj[child]) {
+            if (grandchild == parent)
+                continue;
+            if (!vis[grandchild]) {
+                dfs(grandchild, child, adj, vis, inT, low, list);
+                low[child] = Math.min(low[child], low[grandchild]);
+                if (inT[child] < low[grandchild]) {
+                    list.add(new pair(child + 1, grandchild + 1));
+                }
+            } else
+                low[child] = Math.min(low[child], low[grandchild]);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int node, edge;
+        node = sc.nextInt();
+        edge = sc.nextInt();
+        ArrayList<Integer>[] adj = new ArrayList[node];
+        for (int i = 0; i < node; i++)
+            adj[i] = new ArrayList<>();
+        for (int i = 0; i < edge; i++) {
+            int u, v;
+            u = sc.nextInt();
+            v = sc.nextInt();
+            u--;
+            v--;
+            adj[u].add(v);
+            adj[v].add(u);
+        }
+        ArrayList<pair> list = new ArrayList<>();
+        boolean vis[] = new boolean[node];
+        int inT[] = new int[node];
+        int low[] = new int[node];
+        for (int i = 0; i < node; i++) {
+            if (!vis[i]) {
+                dfs(i, -1, adj, vis, inT, low, list);
+            }
+        }
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i).x + " " + list.get(i).y);
+        }
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////
+input:
+12 14
+1 2
+1 4
+4 3
+2 3
+4 5
+5 6
+6 7
+6 9
+9 8
+7 8
+8 10
+10 11
+10 12
+11 12
+output:
+8 10
+5 6
+4 5
+*/
