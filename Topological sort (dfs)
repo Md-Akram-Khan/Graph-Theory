@@ -59,3 +59,56 @@ vector<int> topoSort(int V, vector<int> adj[])
     return ans;
 }
 */
+/*
+import java.util.*;
+
+public class Graph {
+    public static void dfs(int node, ArrayList<Integer>[] adj,
+            Stack<Integer> s, boolean vis[]) {
+        for (int i : adj[node]) {
+            if (!vis[i]) {
+                vis[i] = true;
+                dfs(i, adj, s, vis);
+            }
+        }
+        s.push(node);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int node, edge;
+        node = sc.nextInt();
+        edge = sc.nextInt();
+        ArrayList<Integer>[] adj = new ArrayList[node];
+        for (int i = 0; i < node; i++)
+            adj[i] = new ArrayList<>();
+        for (int i = 0; i < edge; i++) {
+            int u, v;
+            u = sc.nextInt();
+            v = sc.nextInt();
+            adj[u].add(v);
+        }
+        Stack<Integer> s = new Stack<>();
+        boolean vis[] = new boolean[node];
+        for (int i = 0; i < node; i++) {
+            if (!vis[i]) {
+                vis[i] = true;
+                dfs(i, adj, s, vis);
+            }
+        }
+        while (!s.isEmpty()) {
+            System.out.print(s.pop() + " ");
+        }
+    }
+}
+/////////////////////////////////////////////////
+input:
+6 6
+5 2
+5 0
+4 0
+4 1
+2 3
+3 1
+output:
+5 4 2 3 1 0 
