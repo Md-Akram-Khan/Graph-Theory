@@ -23,3 +23,83 @@ int spanningTree(int V, vector<vector<int>> adj[]) //V = node
     }
     return sum;
 }
+/*
+import java.util.*;
+
+public class Go {
+    static class Pair {
+        int a, b;
+
+        Pair(int a, int b) {
+            this.a = a;
+            this.b = b;
+        }
+    }
+
+    static class Tuple {
+        int node, parent, distance;
+
+        Tuple(int node, int parent, int distance) {
+            this.node = node;
+            this.parent = parent;
+            this.distance = distance;
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int node, edge;
+        node = sc.nextInt();
+        edge = sc.nextInt();
+        ArrayList<Pair>[] adj = new ArrayList[node];
+        for (int i = 0; i < node; i++) {
+            adj[i] = new ArrayList<>();
+        }
+        for (int i = 0; i < edge; i++) {
+            int u, v, distance;
+            u = sc.nextInt();
+            v = sc.nextInt();
+            distance = sc.nextInt();
+            adj[u].add(new Pair(v, distance));
+            adj[v].add(new Pair(u, distance));
+        }
+        PriorityQueue<Tuple> pq = new PriorityQueue<>((x, y) -> Integer.compare(x.distance, y.distance));
+        boolean[] vis = new boolean[node];
+        pq.add(new Tuple(0, -1, 0));
+        ArrayList<Pair> mst = new ArrayList<>();
+        int total = 0;
+        while (!pq.isEmpty()) {
+            Tuple current = pq.poll();
+            if (vis[current.node])
+                continue;
+            vis[current.node] = true;
+            total += current.distance;
+            if (current.parent != -1)
+                mst.add(new Pair(current.parent, current.node));
+            for (Pair child : adj[current.node]) {
+                if (!vis[child.a]) {
+                    pq.add(new Tuple(child.a, current.node, child.b));
+                }
+            }
+        }
+        System.out.println(total);
+        for (Pair i : mst) {
+            System.out.println(i.a + " " + i.b);
+        }
+        sc.close();
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+input:
+4 5
+0 1 10
+0 2 6
+0 3 5
+1 3 15
+2 3 4
+output:
+19
+0 3
+3 2
+0 1
+*/
