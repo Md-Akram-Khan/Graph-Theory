@@ -125,4 +125,75 @@ input:
 3 4 1
 output:
 0 2 3 7 6 
+import java.util.*;
+
+public class Fun {
+    public static class Pair implements Comparable<Pair> {
+        int distance, node;
+
+        Pair(int distance, int node) {
+            this.distance = distance;
+            this.node = node;
+        }
+
+        @Override
+        public int compareTo(Pair other) {
+            if (this.distance == other.distance)
+                return this.node - other.node; // tie-breaking by node number
+            return this.distance - other.distance;
+        }
+    }
+
+    public static int[] dijkstra(int V, ArrayList<int[]>[] adj, int S) {
+        TreeSet<Pair> set = new TreeSet<>();
+        int[] dis = new int[V];
+        Arrays.fill(dis, (int)1e9);
+        dis[S] = 0;
+        set.add(new Pair(0, S));
+
+        while (!set.isEmpty()) {
+            Pair p = set.pollFirst();
+            int dis_of_parent = p.distance;
+            int parent = p.node;
+
+            for (int[] i : adj[parent]) {
+                int child = i[0];
+                int weight = i[1];
+                if (dis_of_parent + weight < dis[child]) {
+                    // If child already has a distance, remove old Pair
+                    if (dis[child] != (int)1e9) {
+                        set.remove(new Pair(dis[child], child));
+                    }
+                    dis[child] = dis_of_parent + weight;
+                    set.add(new Pair(dis[child], child));
+                }
+            }
+        }
+        return dis;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int V = sc.nextInt();
+        int E = sc.nextInt();
+        ArrayList<int[]>[] adj = new ArrayList[V];
+        for (int i = 0; i < V; i++) {
+            adj[i] = new ArrayList<>();
+        }
+
+        for (int i = 0; i < E; i++) {
+            int u = sc.nextInt();
+            int v = sc.nextInt();
+            int w = sc.nextInt();
+            adj[u].add(new int[]{v, w});
+            adj[v].add(new int[]{u, w}); // undirected
+        }
+
+        int[] result = dijkstra(V, adj, 0);
+        for (int d : result) {
+            System.out.print((d == (int)1e9 ? "INF" : d) + " ");
+        }
+    }
+}
+
 */
