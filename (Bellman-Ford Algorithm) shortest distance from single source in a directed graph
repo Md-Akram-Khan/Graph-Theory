@@ -1,28 +1,90 @@
 //can work with negative weight
 //sortest cost from one source to other node
 //can detect negative cycle
-vector<int> bellman_ford(int V, vector<vector<int>>& edges, int S) { // V = Total node, S = source
-vector<int>dis(V, 1e8);
-dis[S] = 0;
-for(int i = 0; i < V - 1; i++)
-{
-        for(auto i: edges)
-        {
-                int u = i[0], v = i[1], weight = i[2];
-                if(dis[u] != 1e8 && dis[u] + weight < dis[v])
-                {
-                        dis[v] = dis[u] + weight;
-                }
+//if the graph is directed the vector edges will only contains edge of u -> v but if the graph is undirected the vector edges will contain both edges u -> v and v -> u
+vector<int> bellman_ford(int V, vector<vector<int>>& edges, int S) { 
+    vector<int> dis(V, 1e9); // safer to use 1e9
+    dis[S] = 0;
+
+    // Relax all edges V-1 times
+    for (int i = 0; i < V - 1; i++) {
+        for (auto it : edges) {
+            int u = it[0], v = it[1], weight = it[2];
+            if (dis[u] != 1e9 && dis[u] + weight < dis[v]) {
+                dis[v] = dis[u] + weight;
+            }
         }
- }
-        // for checking negative cycle
-        for(auto i: edges)
-        {
-                int u = i[0], v = i[1], weight = i[2];
-                if(dis[u] != 1e8 && dis[u] + weight < dis[v])
-                {
-                    cout<<"YES Negative cycle";
-                }
+    }
+
+    // Check for negative weight cycles
+    for (auto it : edges) {
+        int u = it[0], v = it[1], weight = it[2];
+        if (dis[u] != 1e9 && dis[u] + weight < dis[v]) {
+            cout << "YES, Negative cycle detected.\n";
+            break;
         }
-        return dis;    
+    }
+
+    return dis;    
 }
+/*
+import java.util.*;
+
+public class Fun {
+    public static class Tuple {
+        int x, y, z;
+
+        Tuple(int x, int y, int z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int m = sc.nextInt();
+        ArrayList<Tuple> arr = new ArrayList<>();
+        for (int i = 0; i < m; i++) {
+            int x = sc.nextInt();
+            int y = sc.nextInt();
+            int z = sc.nextInt();
+            arr.add(new Tuple(x, y, z));
+            arr.add(new Tuple(y, x, z)); // For undirected graph
+        }
+        int[] dis = new int[n];
+        Arrays.fill(dis, Integer.MAX_VALUE);
+        dis[0] = 0;
+        for (int i = 0; i < n - 1; i++) {
+            for (Tuple t : arr) {
+                if (dis[t.x] != Integer.MAX_VALUE && dis[t.y] > dis[t.x] + t.z) {
+                    dis[t.y] = dis[t.x] + t.z;
+                }
+            }
+        }
+        for (int i = 0; i < n - 1; i++) {
+            for (Tuple t : arr) {
+                if (dis[t.x] != Integer.MAX_VALUE && dis[t.y] > dis[t.x] + t.z) {
+                    System.out.println("Negative cycle detected");
+                    return;
+                }
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            System.out.print(dis[i] + " ");
+        }
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////
+input:
+5 6
+0 1 2
+0 2 4
+1 2 1
+1 3 7
+2 4 3
+3 4 1
+output:
+0 2 3 7 6 
+*/
